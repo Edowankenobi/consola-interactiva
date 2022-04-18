@@ -3,7 +3,8 @@ const { inquirerMenu,
         pausa,
         leerInput,
         listadoTareasBorrar,
-        confirmar } = require('./helpers/inquirer');
+        confirmar,
+        mostrarListadoCkecklist } = require('./helpers/inquirer');
 const { saveFile, readDb } = require('./helpers/savefile');
 
 const Tareas = require('./models/tareas');
@@ -43,11 +44,22 @@ const main = async() => {
             case '4':
                 tareas.listarPendientesCompletadas(false);
                 break;
+            
+            case '5':
+                const ids = await mostrarListadoCkecklist(tareas.listadoArr);
+                tareas.toggleCompletadas(ids);
+                break;
 
             case '6':
                 const id = await listadoTareasBorrar(tareas.listadoArr);
                 const respuesta = await confirmar('¿Estás seguro?');
-                console.log({ok});
+
+                if(id !== '0'){
+                    if(respuesta){
+                        tareas.borrarTarea(id);
+                        console.log('Tarea borrada'.yellow);
+                    }
+                }
                 break;
         
         }

@@ -73,8 +73,6 @@ class Tareas {
             return;
         }
 
-        // const filtro = (completadas) ? this.listadoArr.filter(tarea => tarea.completadoEn !== null) : this.listadoArr.filter(tarea => tarea.completadoEn === null);
-
 
         this.listadoArr.forEach(tarea => {
 
@@ -85,7 +83,7 @@ class Tareas {
                 //mostrar completadas
                 if (completadoEn) {
                     contador += 1;
-                    console.log(`${(contador + '.-').yellow} ${desc} :: ${completadoEn}`);
+                    console.log(`${(contador + '.-').yellow} ${desc.blue} :: ${completadoEn.yellow}`);
                 }
             } else {
                 //mostrar pendientes
@@ -100,6 +98,23 @@ class Tareas {
         })
 
 
+    }
+
+    toggleCompletadas(ids = []){
+
+        ids.forEach( id => {
+            const tarea = this._listado[id];
+            if (!tarea.completadoEn) {
+                tarea.completadoEn = new Date().toISOString();
+            }
+        });
+
+
+        this.listadoArr.forEach( tarea => {
+            if(!ids.includes(tarea.id)){
+                this._listado[tarea.id].completadoEn = null;
+            }
+        });
     }
 
 }
