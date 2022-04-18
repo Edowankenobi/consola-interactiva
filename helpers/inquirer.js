@@ -5,35 +5,35 @@ const preguntas = [
     {
         type: 'list',
         name: 'opcion',
-        message: '¿Qué desea hacer?',
+        message: '¿Qué desea hacer?'.yellow,
         choices: [
             {
                 value: '1',
-                name: '1. Crear tarea'
+                name: `${'1.'.yellow} Crear tarea`
             },
             {
                 value: '2',
-                name: '2. Listar tareas'
+                name: `${'2.'.yellow} Listar tareas`
             },
             {
                 value: '3',
-                name: '3. Listar tareas completadas'
+                name: `${'3.'.yellow} Listar tareas completadas`
             },
             {
                 value: '4',
-                name: '4. Listar tareas pendietes'
+                name: `${'4.'.yellow} Listar tareas pendientes`
             },
             {
                 value: '5',
-                name: '5. Completar tarea(s)'
+                name: `${'5.'.yellow} Completar tarea(s)`
             },
             {
                 value: '6',
-                name: '6. Borrar tarea'
+                name: `${'6.'.yellow} Borrar tarea`
             },
             {
                 value: '0',
-                name: '0. Salir'
+                name: `${'0.'.yellow} Salir`
             },
         ]
     }
@@ -90,8 +90,49 @@ const leerInput = async(message) =>{
 }
 
 
+const listadoTareasBorrar = async(tareas = []) =>{
+    const choices = tareas.map((tarea, i) =>{
+        const idx = `${i+1}.`.yellow;
+        return {
+            value: tarea.id,
+            name: `${idx} ${tarea.desc}`
+        }
+    });
+
+    const preguntas = [
+        {
+            type: 'list',
+            name: 'id',
+            message: `${'Borrar'.red}`,
+            choices
+        }
+    ];
+
+    const {id } = await inquirer.prompt(preguntas);
+
+    return id;
+
+}
+
+
+const confirmar = (message) =>{
+    const question = [
+        {
+            type: 'confirm',
+            name: 'ok',
+            message
+        }
+    ]
+
+    const { ok } = await inquirer.prompt(question);
+    return ok;
+}
+
+
 module.exports = {
     inquirerMenu,
     pausa,
-    leerInput
+    leerInput,
+    listadoTareasBorrar,
+    confirmar
 }
